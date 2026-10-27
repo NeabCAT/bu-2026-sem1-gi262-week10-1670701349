@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
+using static Codice.Client.Common.Authentication.OAuthSignIn;
 
 namespace MidtermExam.Prob02
 {
@@ -30,7 +32,21 @@ namespace MidtermExam.Prob02
         public void Open(string url)
         {
             // TODO: เขียนคำตอบแทนคำสั่ง throw exception ด้านล่าง
-            throw new NotImplementedException();
+            Console.WriteLine("Open");
+            if (string.IsNullOrWhiteSpace(url))
+            {
+                return;
+            }
+
+            if (!string.IsNullOrEmpty(currentUrl))
+            {
+                backHistory.Push(currentUrl);
+            }
+           
+
+            currentUrl = url;
+            forwardHistory.Clear();
+
         }
 
         /// <summary>ย้อนกลับไปยังหน้าล่าสุดในประวัติย้อนกลับหนึ่งขั้น</summary>
@@ -41,7 +57,14 @@ namespace MidtermExam.Prob02
         public void Back()
         {
             // TODO: เขียนคำตอบแทนคำสั่ง throw exception ด้านล่าง
-            throw new NotImplementedException();
+            Console.WriteLine("Back");
+            if (backHistory.Count == 0)
+            {
+                return;
+            }
+
+            forwardHistory.Push(currentUrl);
+            currentUrl = backHistory.Pop();
         }
 
         /// <summary>ไปข้างหน้าไปยังหน้าล่าสุดในประวัติไปข้างหน้าหนึ่งขั้น</summary>
@@ -52,7 +75,16 @@ namespace MidtermExam.Prob02
         public void Forward()
         {
             // TODO: เขียนคำตอบแทนคำสั่ง throw exception ด้านล่าง
-            throw new NotImplementedException();
+            Console.WriteLine("Forward");
+            forwardHistory.Push("open google.com");
+
+            if (forwardHistory.Count == 0)
+            {
+                return;
+            }
+
+            backHistory.Push(currentUrl);
+            currentUrl = forwardHistory.Pop();
         }
 
         /// <summary>อ่าน URL ของหน้าปัจจุบัน โดยไม่เปลี่ยนหน้าหรือประวัติใด ๆ</summary>
@@ -61,7 +93,8 @@ namespace MidtermExam.Prob02
         {
             // TODO: คืนค่าหน้าที่ติดตามอยู่ใน currentUrl แทนคำสั่ง throw ด้านล่าง
             // เมธอดนี้ใช้เพื่ออ่านสถานะเท่านั้น จึงไม่ต้อง Push(), Pop() หรือ Clear() ประวัติ
-            throw new NotImplementedException();
+            Console.WriteLine("Current");
+            return currentUrl;
         }
     }
 }
